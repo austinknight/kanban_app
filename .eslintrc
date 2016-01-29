@@ -5,9 +5,6 @@
     "browser": true,
     "node": true
   },
-  "globals": {
-    "chrome": true
-  },
   "plugins": [
     "react"
   ],

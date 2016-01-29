@@ -1,22 +1,29 @@
-const merge = require('webpack-merge');
-const path = require('path');
-const webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+var webpack = require('webpack');
+var path = require('path');
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 
-const TARGET = process.env.npm_lifecycle_event;
+var env = process.env.WEBPACK_ENV;
+var plugins = [];
 
-const PATHS = {
-  app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build')
-};
+plugins.push(new CopyWebpackPlugin([
+  {from: './src/index.html'}
+]));
 
-const common = {
-  entry: PATHS.app,
-  resolve: {
-    extensions: ['', '.js', '.jsx']
+if (env === 'build') {
+  plugins.push(new UglifyJsPlugin({ minimize: true }));
+}
+
+var entryFile = './src/index.js';
+
+var config = {
+  entry: entryFile,
+  devtool: 'eval-source-map',
+  eslint: {
+    configFile: './.eslintrc'
   },
   output: {
-    path: PATHS.build,
+    path: __dirname + '/build',
     filename: 'bundle.js'
   },
   module: {
@@ -36,32 +43,8 @@ const common = {
         loaders: ['style', 'css', 'sass']
       }
     ]
-  }
+  },
+  plugins: plugins
 };
 
-if(TARGET === 'dev' || !TARGET) {
-  module.exports = merge(common, {
-    devtool: 'eval-source-map',
-    devServer: {
-      contentBase: PATHS.build,
-      historyApiFallback: true,
-      hot: true,
-      inline: true,
-      progress: true,
-      stats: 'errors-only',
-      host: process.env.HOST,
-      port: process.env.PORT
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  });
-}
-
-if(TARGET === 'build') {
-  module.exports = merge(common, {
-    plugins: [
-      new UglifyJsPlugin({ minimize: true })
-    ]
-  });
-}
+module.exports = config;

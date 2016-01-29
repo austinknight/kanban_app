@@ -1,2 +1,2 @@
-Kanban App Tutorial
-===================
+React Kanban App
+================
