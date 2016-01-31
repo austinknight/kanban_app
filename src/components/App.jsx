@@ -26,6 +26,8 @@ export default class App extends React.Component {
     };
 
     this._addNote = this._addNote.bind(this);
+    this._editNote = this._editNote.bind(this);
+    this._deleteNote = this._deleteNote.bind(this);
   }
 
   _addNote() {
@@ -37,13 +39,34 @@ export default class App extends React.Component {
     });
   }
 
+  _editNote(id, task) {
+    const notes = this.state.notes.map(note => {
+      if(note.id === id && task) {
+        note.task = task;
+      }
+
+      return note;
+    });
+
+    this.setState({notes});
+  }
+
+  _deleteNote(id) {
+    this.setState({
+      notes: this.state.notes.filter(note => note.id !== id)
+    });
+  }
+
   render() {
     const notes = this.state.notes;
 
     return (
        <div>
-         <button onClick={this._addNote}>+ Add Note</button>
-         <Notes notes={notes} />
+         <button className="add-note" onClick={this._addNote}>+ Add Note</button>
+         <Notes notes={notes}
+           onEdit={this._editNote}
+           onDelete={this._deleteNote} />
+
        </div>
      );
   }

@@ -13,6 +13,7 @@ export default class Note extends React.Component {
     this._edit = this._edit.bind(this);
     this._checkEnter = this._checkEnter.bind(this);
     this._finishEdit = this._finishEdit.bind(this);
+    this._renderDelete = this._renderDelete.bind(this);
   }
 
   _renderEdit() {
@@ -30,7 +31,14 @@ export default class Note extends React.Component {
   }
 
   _renderNote() {
-    return <div onClick={this._edit}>{this.props.task}</div>;
+    const onDelete = this.props.onDelete;
+
+    return (
+      <div onClick={this._edit}>
+        <span>{this.props.task}</span>
+        {onDelete ? this._renderDelete() : null }
+      </div>
+    );
   }
 
   _edit() {
@@ -55,6 +63,10 @@ export default class Note extends React.Component {
         editing: false
       });
     }
+  }
+
+  _renderDelete() {
+    return <button className="delete-note" onClick={this.props.onDelete}>x</button>;
   }
 
   render() {
