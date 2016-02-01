@@ -15,7 +15,7 @@ class NoteStore {
     note.id = uuid.v4();
 
     this.setState({
-      notes: notes.concat(note);
+      notes: notes.concat(note)
     });
   }
 
@@ -33,7 +33,7 @@ class NoteStore {
 
   delete(id) {
     this.setState({
-      notes: this.notes.filter(note => node.id !== id)
+      notes: this.notes.filter(note => note.id !== id)
     });
   }
 }
