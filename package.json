@@ -35,5 +35,9 @@
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "alt": "^0.18.2",
+    "alt-utils": "^1.0.0"
   }
 }
